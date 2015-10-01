@@ -4,7 +4,7 @@ import numpy as np
 import pandas as p
 import theano.tensor as T
 import lasagne as nn
-from lasagne.layers import dnn
+# from lasagne.layers import dnn
 from lasagne.nonlinearities import LeakyRectify
 
 from layers import ApplyNonlinearity
@@ -133,13 +133,13 @@ def build_model():
     )
     layers.append(l_in1)
 
-    Conv2DLayer = dnn.Conv2DDNNLayer
-    MaxPool2DLayer = dnn.MaxPool2DDNNLayer
+    Conv2DLayer = nn.layers.Conv2DLayer #dnn.Conv2DDNNLayer
+    MaxPool2DLayer = nn.layers.MaxPool2DLayer #dnn.MaxPool2DDNNLayer
     DenseLayer = nn.layers.DenseLayer
 
     l_conv = Conv2DLayer(layers[-1],
                          num_filters=32, filter_size=(7, 7), stride=(2, 2),
-                         border_mode='same',
+                         # border_mode='same', # commented due to NotImplementedError: Strided convolution with border_mode 'same' is not supported by this layer yet.
                          nonlinearity=LeakyRectify(leakiness),
                          W=nn.init.Orthogonal(1.0), b=nn.init.Constant(0.1),
                          untie_biases=True)
